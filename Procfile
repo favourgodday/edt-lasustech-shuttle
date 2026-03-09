@@ -1,0 +1,1 @@
+web: gunicorn edt_shuttle_bot:app
