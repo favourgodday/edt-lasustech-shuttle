@@ -4,9 +4,8 @@ from database import EDTShuttleDB
 import sqlite3
 from datetime import datetime
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+# ✅ FIXED: Removed dotenv (doesn't work on cloud platforms)
 
 app = Flask(__name__)
 
@@ -14,7 +13,18 @@ app = Flask(__name__)
 db = EDTShuttleDB()
 
 # ===== CONFIGURATION =====
-ADMIN_PHONE_NUMBER = os.getenv('ADMIN_PHONE', 'whatsapp:+2349081617382')
+# ✅ FIXED: Use correct variable name that matches Railway/Render
+ADMIN_PHONE_NUMBER = os.getenv('ADMIN_PHONE_NUMBER', 'whatsapp:+2349081617382')
+
+# Twilio Credentials (MUST be set in Railway/Render Environment Variables)
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_WHATSAPP_NUMBER = os.getenv('TWILIO_WHATSAPP_NUMBER', 'whatsapp:+14155238886')
+
+# Warning if credentials missing
+if not TWILIO_ACCOUNT_SID or not TWILIO_AUTH_TOKEN:
+    print("⚠️ WARNING: Twilio credentials not found in Environment Variables!")
+    print("Check your Railway/Render dashboard settings.")
 
 # ===== ZONE DEFINITIONS =====
 SHORT_ZONES = ['ICT', 'Activities Centre', 'Activities']
